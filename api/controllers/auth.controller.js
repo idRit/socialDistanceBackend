@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const config = require('../../config/pass.config');
 const nodemailer = require("nodemailer");
 
+
 exports.login = (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
@@ -180,7 +181,8 @@ async function loginHelper(username, password, res) {
             let successJson = {
                 success: true,
                 message: 'Authentication successful!',
-                token: token
+                token: token,
+                id: alreadyPresent._id,
             };
             console.log(successJson);
             return res.json(successJson);
