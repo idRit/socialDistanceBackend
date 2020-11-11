@@ -114,6 +114,10 @@ exports.updateLocation = async (req, res) => {
                     console.log("here");
                     await Record.findOneAndUpdate({ userId }, { $inc: { score: 1 } });
                     await Record.findOneAndUpdate({ userId: location.userId }, { $inc: { score: 1 } });
+                    return res.json({
+                        success: 1,
+                        message: "Location updated along with score!",
+                    });
                 }
         });
 
@@ -126,6 +130,22 @@ exports.updateLocation = async (req, res) => {
         });
     } catch (error) {
         console.log(error);
+        return res.json({
+            success: -1,
+            message: "something happened"
+        });
+    }
+}
+
+exports.updateBluetoothScore = async (req, res) => {
+    try {
+        await Record.findOneAndUpdate({ userId: req.body.userId }, { $inc: { score: 1 } });
+        await Record.findOneAndUpdate({ userId: req.body.scannedId }, { $inc: { score: 1 } });
+        return res.json({
+            success: 1,
+            message: "Location updated along with score!",
+        });
+    } catch (error) {
         return res.json({
             success: -1,
             message: "something happened"
