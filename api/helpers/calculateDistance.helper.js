@@ -12,7 +12,7 @@ module.exports = (lat1, lon1, lat2, lon2) => {
         }
     ];
 
-    let distance = haversine(points[0], points[1], {threshold: 1, unit: 'meter'});
+    let distance = haversine(points[0], points[1], {threshold: 2, unit: 'meter'});
 
     return distance;
 }

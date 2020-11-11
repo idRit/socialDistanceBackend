@@ -108,7 +108,7 @@ exports.updateLocation = async (req, res) => {
         let profile = await Record.findOne({ userId: userId });
 
         await allLocations.forEach(async location => {
-            console.log(calculateDistance(lastSeenAt.lat, lastSeenAt.lng, location.lastSeenAt.lat, location.lastSeenAt.lng));
+            // console.log(calculateDistance(lastSeenAt.lat, lastSeenAt.lng, location.lastSeenAt.lat, location.lastSeenAt.lng));
             if (calculateDistance(lastSeenAt.lat, lastSeenAt.lng, location.lastSeenAt.lat, location.lastSeenAt.lng))
                 if (!(profile.innerCircle.includes(location.userId) || location.userId == userId)) {
                     console.log("here");
