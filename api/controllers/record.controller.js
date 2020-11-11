@@ -139,8 +139,8 @@ exports.updateLocation = async (req, res) => {
 
 exports.updateBluetoothScore = async (req, res) => {
     try {
-        await Record.findOneAndUpdate({ userId: req.body.userId }, { $inc: { score: 1 } });
-        await Record.findOneAndUpdate({ userId: req.body.scannedId }, { $inc: { score: 1 } });
+        await Record.findOneAndUpdate({ userId: req.body.userId }, { $inc: { bluetoothScore: 1 } });
+        await Record.findOneAndUpdate({ userId: req.body.scannedId }, { $inc: { bluetoothScore: 1 } });
         return res.json({
             success: 1,
             message: "Location updated along with score!",
