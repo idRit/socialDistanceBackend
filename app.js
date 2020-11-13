@@ -40,5 +40,5 @@ require('./api/routes/record.route.js')(app);
 // require('./api/routes/blog.route.js')(app);
 //require('./api/routes/util.route.js')(app);
 
-app.listen(process.env.PORT || 3000);
+app.listen(3300);
 console.log('listening on port');
