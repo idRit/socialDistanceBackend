@@ -7,6 +7,7 @@ module.exports = app => {
 
     app.post('/api/updateLocation', authMiddleware.checkToken, record.updateLocation);
     app.post('/api/updateBluetoothScore', authMiddleware.checkToken, record.updateBluetoothScore);
+    app.post('/api/updateInfected', authMiddleware.checkToken, record.updateInfected);
 
     app.get('/api/innerCircle/verifyQRcode/:self_id/:ref_id', authMiddleware.checkToken, record.verifyQRcode);
     app.delete('/api/innerCircle/removeInnerCircle/:self_id/:ref_id', authMiddleware.checkToken, record.removeFromIC);

@@ -143,7 +143,22 @@ exports.updateBluetoothScore = async (req, res) => {
         await Record.findOneAndUpdate({ userId: req.body.scannedId }, { $inc: { bluetoothScore: 1 } });
         return res.json({
             success: 1,
-            message: "Location updated along with score!",
+            message: "In contact with infected person!",
+        });
+    } catch (error) {
+        return res.json({
+            success: -1,
+            message: "something happened"
+        });
+    }
+}
+
+exports.updateInfected = async (req, res) => {
+    try {
+        await Record.findOneAndUpdate({ userId: req.body.userId }, { infected: req.body.infected });
+        return res.json({
+            success: 1,
+            message: "Infected status updated! Stay Safe!",
         });
     } catch (error) {
         return res.json({

@@ -9,7 +9,8 @@ const recordSchema = new mongoose.Schema({
     }],
     userId: String,
     innerCircle: { type: Array, "default": [] },
-    bluetoothScore: { type: Number, default: 0 }
+    bluetoothScore: { type: Number, default: 0 },
+    infected: Boolean,
 }, {
     timestamps: true
 });
