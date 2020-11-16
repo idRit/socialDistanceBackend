@@ -179,7 +179,7 @@ exports.transferAll = async (req, res) => {
                     dailyScores: {
                         score: el.score,
                         bluetoothScore: el.bluetoothScore,
-                        date: moment().format('YYYY-MM-DD'), 
+                        date: moment().format('YYYY-MM-DD'),
                     }
                 }
             });
@@ -187,6 +187,28 @@ exports.transferAll = async (req, res) => {
 
         res.json({
             success: 1
+        });
+    } catch (error) {
+        return res.json({
+            success: -1,
+            message: "something happened"
+        });
+    }
+}
+
+exports.travelData = async (req, res) => {
+    try {
+        let nowArr = moment().format('HH:mm:ss').split(':');
+        let now = (nowArr[0] * 3600) + (nowArr[1] * 60) + nowArr[2];
+
+        let records = await Record.find({
+            userId: req.params.self_id,
+            "createdAt": { $gte: new Date(Date.now() - now * 60 * 1000) }
+        });
+
+        return res.json({
+            success: 1,
+            records: records,
         });
     } catch (error) {
         return res.json({

@@ -13,6 +13,7 @@ module.exports = app => {
     app.delete('/api/innerCircle/removeInnerCircle/:self_id/:ref_id', authMiddleware.checkToken, record.removeFromIC);
 
     app.get('/api/score/getAllScores/:self_id', authMiddleware.checkToken, record.getMonthScores);
+    app.get('/api/score/travelData/:self_id', authMiddleware.checkToken, )
 
     app.get('/api/transferAll', record.transferAll);
 
