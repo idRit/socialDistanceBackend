@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const schedule = require('node-schedule');
+const fetch = require('node-fetch');
+const moment = require('moment');
 
 const app = express();
 
@@ -42,3 +45,11 @@ require('./api/routes/record.route.js')(app);
 
 app.listen(3300);
 console.log('listening on port');
+
+schedule.scheduleJob('0 0 * * *', async () => { 
+    let response = await (await fetch("http://localhost:3300/api/transferAll")).json();
+    console.log({
+        date: moment().format('YYYY-MM-DD'),
+        success: response.success
+    });
+});
