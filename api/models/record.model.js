@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const recordSchema = new mongoose.Schema({
     score: { type: Number, default: 0 },
+    bluetoothScore: { type: Number, default: 0 },
     dailyScores: [{
         date: String,
         score: Number,
@@ -9,7 +10,6 @@ const recordSchema = new mongoose.Schema({
     }],
     userId: String,
     innerCircle: { type: Array, "default": [] },
-    bluetoothScore: { type: Number, default: 0 },
     infected: Boolean,
 }, {
     timestamps: true

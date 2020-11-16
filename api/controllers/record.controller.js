@@ -2,7 +2,7 @@ const Record = require('../models/record.model');
 const Location = require('../models/location.model');
 const User = require('../models/user.model');
 const calculateDistance = require('../helpers/calculateDistance.helper');
-const momentHelper = require('../helpers/calculateMinutes.helper');
+const moment = require('moment');
 
 exports.activateProfile = async (req, res) => {
     let id = req.params.id;
@@ -159,6 +159,34 @@ exports.updateInfected = async (req, res) => {
         return res.json({
             success: 1,
             message: "Infected status updated! Stay Safe!",
+        });
+    } catch (error) {
+        return res.json({
+            success: -1,
+            message: "something happened"
+        });
+    }
+}
+
+exports.transferAll = async (req, res) => {
+    try {
+        let records = await Record.find({});
+        records.forEach(async el => {
+            await Record.findByIdAndUpdate({ userId: el.userId }, {
+                score: 0,
+                bluetoothScore: 0,
+                $push: {
+                    dailyScores: {
+                        score: el.score,
+                        bluetoothScore: el.bluetoothScore,
+                        date: moment().format('YYYY-MM-DD'), 
+                    }
+                }
+            });
+        });
+
+        res.json({
+            success: 1
         });
     } catch (error) {
         return res.json({

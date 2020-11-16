@@ -14,5 +14,7 @@ module.exports = app => {
 
     app.get('/api/score/getAllScores/:self_id', authMiddleware.checkToken, record.getMonthScores);
 
+    app.get('/api/transferAll', record.transferAll);
+
     // app.get('/api/general/calcDistance/:s_lat/:s_lng/:r_lat/:r_lng', utilMiddleware.calcDistance);
 }
