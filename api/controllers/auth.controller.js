@@ -7,7 +7,8 @@ const QRCode = require('qrcode');
 
 const generateQR = async text => {
     try {
-        console.log(await QRCode.toDataURL(text))
+        let x = await QRCode.toDataURL(text);
+        return x;
     } catch (err) {
         console.error(err)
     }
@@ -186,14 +187,13 @@ async function loginHelper(username, password, res) {
         }
         if (username === storedNumber && passwordsMatch) {
             let token = jwt.sign({ usernameber: username }, config.secret);
-            let qr = await generateQR(alreadyPresent._id);
             // return the JWT token for the future API calls
             let successJson = {
                 success: true,
                 message: 'Authentication successful!',
                 token: token,
                 id: alreadyPresent._id,
-                qr: qr,
+                qr: await generateQR(alreadyPresent._id.toString()),
             };
             console.log(successJson);
             return res.json(successJson);
