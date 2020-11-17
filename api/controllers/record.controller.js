@@ -172,7 +172,7 @@ exports.transferAll = async (req, res) => {
     try {
         let records = await Record.find({});
         records.forEach(async el => {
-            await Record.findByIdAndUpdate({ userId: el.userId }, {
+            await Record.findOneAndUpdate({ userId: el.userId }, {
                 score: 0,
                 bluetoothScore: 0,
                 $push: {
@@ -184,7 +184,6 @@ exports.transferAll = async (req, res) => {
                 }
             });
         });
-
         res.json({
             success: 1
         });
