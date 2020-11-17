@@ -3,6 +3,15 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const config = require('../../config/pass.config');
 const nodemailer = require("nodemailer");
+const QRCode = require('qrcode');
+
+const generateQR = async text => {
+    try {
+        console.log(await QRCode.toDataURL(text))
+    } catch (err) {
+        console.error(err)
+    }
+}
 
 
 exports.login = (req, res) => {
@@ -183,6 +192,7 @@ async function loginHelper(username, password, res) {
                 message: 'Authentication successful!',
                 token: token,
                 id: alreadyPresent._id,
+                qr: generateQR(alreadyPresent._id),
             };
             console.log(successJson);
             return res.json(successJson);
