@@ -3,6 +3,15 @@ const Location = require('../models/location.model');
 const User = require('../models/user.model');
 const calculateDistance = require('../helpers/calculateDistance.helper');
 const moment = require('moment');
+const QRCode = require('qrcode');
+
+const generateQR = async text => {
+    try {
+        console.log(await QRCode.toDataURL(text))
+    } catch (err) {
+        console.error(err)
+    }
+}
 
 exports.activateProfile = async (req, res) => {
     let id = req.params.id;
@@ -12,9 +21,12 @@ exports.activateProfile = async (req, res) => {
         let record = new Record({ userId: id });
         await record.save();
 
+        let qr = generateQR(id);
+
         return res.json({
             success: 0,
-            message: "Profile Activated!"
+            message: "Profile Activated!",
+            qr: qr
         });
 
     } catch (error) {
@@ -149,7 +161,13 @@ exports.updateBluetoothScore = async (req, res) => {
         return res.json({
             success: -1,
             message: "something happened"
-        });
+        }); const generateQR = async text => {
+            try {
+                console.log(await QRCode.toDataURL(text))
+            } catch (err) {
+                console.error(err)
+            }
+        }
     }
 }
 
