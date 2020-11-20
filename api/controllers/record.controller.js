@@ -77,8 +77,17 @@ exports.removeFromIC = async (req, res) => {
     let scanned = req.params.ref_id;
 
     try {
-        await Record.findOneAndUpdate({ _id: self }, { $pull: { innerCircle: scanned } });
-        await Record.findOneAndUpdate({ _id: scanned }, { $pull: { innerCircle: self } });
+        let user = await User.findOne({
+            email: scanned
+        });
+
+        if (!user) return res.json({
+            success: 0,
+            message: "User not found!"
+        });
+
+        await Record.findOneAndUpdate({ userId: self }, { $pull: { innerCircle: user._id } });
+        await Record.findOneAndUpdate({ userId: user._id }, { $pull: { innerCircle: self } });
 
         let scannedRecord = await User.findOne({ _id: scanned });
         let name = scannedRecord.username;
@@ -257,7 +266,7 @@ exports.getAllInnerCircleEmails = async (req, res) => {
         let listOfEmails = [];
 
         let innerCircle = record.innerCircle;
-        
+
         for (let i = 0; i < innerCircle.length; i++) {
             let el = await User.findOne({ _id: innerCircle[i] });
             listOfEmails.push(el.email);
