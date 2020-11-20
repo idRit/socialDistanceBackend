@@ -263,7 +263,10 @@ exports.getAllInnerCircleEmails = async (req, res) => {
             listOfEmails.push(el.email);
         }
 
-        return res.json(listOfEmails);
+        return res.json({
+            success: 1,
+            listOfEmails
+        });
     } catch (error) {
         console.log(error);
         return res.json({
