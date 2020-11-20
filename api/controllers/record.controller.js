@@ -174,7 +174,7 @@ exports.updateBluetoothScore = async (req, res) => {
 exports.updateInfected = async (req, res) => {
     try {
         await Record.findOneAndUpdate({ userId: req.body.userId }, { infected: req.body.infected });
-        return res.json({
+        return res.jgetAllInnerCircleEmailsson({
             success: 1,
             message: "Infected status updated! Stay Safe!",
         });
@@ -228,6 +228,46 @@ exports.travelData = async (req, res) => {
             records: records,
         });
     } catch (error) {
+        return res.json({
+            success: -1,
+            message: "something happened"
+        });
+    }
+}
+
+exports.getAllInnerCircleEmails = async (req, res) => {
+    try {
+        const id = req.params.self_id;
+        let record = await Record.find({ _id: id });
+
+        const listOfEmails = [];
+
+        record.innerCircle.forEach(async el => {
+            let email = await User.find({ _id: el });
+            listOfEmails.push(email);
+        });
+
+        return res.json(listOfEmails);
+    } catch (error) {
+        console.log(error);
+        return res.json({
+            success: -1,
+            message: "something happened"
+        });
+    }
+}
+
+exports.getProfileCurrentScores = async (req, res) => {
+    try {
+        const id = req.params.self_id;
+        let record = await Record.find({ _id: id });
+
+        return res.json({
+            score: record.score,
+            bluetoothScore: record.bluetoothScore,
+        });
+    } catch (error) {
+        console.log(error);
         return res.json({
             success: -1,
             message: "something happened"

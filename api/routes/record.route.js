@@ -10,10 +10,12 @@ module.exports = app => {
     app.post('/api/updateInfected', authMiddleware.checkToken, record.updateInfected);
 
     app.get('/api/innerCircle/verifyQRcode/:self_id/:ref_id', authMiddleware.checkToken, record.verifyQRcode);
-    app.delete('/api/innerCircle/removeInnerCircle/:self_id/:ref_id', authMiddleware.checkToken, record.removeFromIC);
+    app.get('/api/innerCircle/getAllInnerCircleEmails/:self_id', authMiddleware.checkToken, record.getAllInnerCircleEmails);
+    app.get('/api/innerCircle/removeInnerCircle/:self_id/:ref_id', authMiddleware.checkToken, record.removeFromIC);
 
     app.get('/api/score/getAllScores/:self_id', authMiddleware.checkToken, record.getMonthScores);
-    app.get('/api/score/travelData/:self_id', authMiddleware.checkToken, record.travelData)
+    app.get('/api/score/travelData/:self_id', authMiddleware.checkToken, record.travelData);
+    app.get('/api/getProfileCurrentScores/::self_id', authMiddleware.checkToken, record.getProfileCurrentScores);
 
     app.get('/api/transferAll', record.transferAll);
 
