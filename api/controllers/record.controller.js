@@ -93,9 +93,9 @@ exports.removeFromIC = async (req, res) => {
         let name = scannedRecord.username;
 
         return res.json({
-            success: 0,
+            success: 1,
             message: `${name}, removed from "Inner-Circle"!`
-        });      // main logic
+        });  
 
     } catch (error) {
         console.log(error);
