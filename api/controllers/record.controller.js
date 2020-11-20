@@ -93,9 +93,13 @@ exports.getMonthScores = async (req, res) => {
 
     try {
         let obj = await Record.findOne({ _id: id });
+
+        let scoreObj = obj.dailyScores.filter(el => moment(el.date).isSame(req.params.date, "day"))[0];
+
         return res.json({
-            success: 0,
-            dailyScores: obj.dailyScores,
+            success: 1,
+            score: scoreObj.score,
+            bluetoothScore: scoreObj.bluetoothScore,
         });
     } catch (error) {
         console.log(error);
