@@ -251,14 +251,17 @@ exports.travelData = async (req, res) => {
 exports.getAllInnerCircleEmails = async (req, res) => {
     try {
         const id = req.params.self_id;
-        let record = await Record.find({ _id: id });
+        let record = await Record.findOne({ userId: id });
+        console.log(record);
 
-        const listOfEmails = [];
+        let listOfEmails = [];
 
-        record.innerCircle.forEach(async el => {
-            let email = await User.find({ _id: el });
-            listOfEmails.push(email);
-        });
+        let innerCircle = record.innerCircle;
+        
+        for (let i = 0; i < innerCircle.length; i++) {
+            let el = await User.findOne({ _id: innerCircle[i] });
+            listOfEmails.push(el.email);
+        }
 
         return res.json(listOfEmails);
     } catch (error) {
