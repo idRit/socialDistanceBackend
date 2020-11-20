@@ -43,8 +43,17 @@ exports.verifyQRcode = async (req, res) => {
     let scanned = req.params.ref_id;
 
     try {
-        await Record.findOneAndUpdate({ _id: self }, { $push: { innerCircle: scanned } });
-        await Record.findOneAndUpdate({ _id: scanned }, { $push: { innerCircle: self } });
+        let record = await Record.findOne({ userId: self });
+
+        if (record.innerCircle.includes(scanned)) {
+            return res.json({
+                success: 1,
+                message: "Already in inner circle!"
+            });
+        }
+
+        await Record.findOneAndUpdate({ userId: self }, { $push: { innerCircle: scanned } });
+        await Record.findOneAndUpdate({ userId: scanned }, { $push: { innerCircle: self } });
 
         let scannedRecord = await User.findOne({ _id: scanned });
         let name = scannedRecord.username;
@@ -77,7 +86,7 @@ exports.removeFromIC = async (req, res) => {
         return res.json({
             success: 0,
             message: `${name}, removed from "Inner-Circle"!`
-        });
+        });      // main logic
 
     } catch (error) {
         console.log(error);
