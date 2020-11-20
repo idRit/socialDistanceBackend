@@ -92,7 +92,7 @@ exports.getMonthScores = async (req, res) => {
     let id = req.params.self_id;
 
     try {
-        let obj = await Record.findOne({ _id: id });
+        let obj = await Record.findOne({ userId: id });
 
         let scoreObj = obj.dailyScores.filter(el => moment(el.date).isSame(req.params.date, "day"))[0];
 
