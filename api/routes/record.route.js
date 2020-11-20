@@ -15,7 +15,7 @@ module.exports = app => {
 
     app.get('/api/score/getAllScores/:self_id', authMiddleware.checkToken, record.getMonthScores);
     app.get('/api/score/travelData/:self_id', authMiddleware.checkToken, record.travelData);
-    app.get('/api/getProfileCurrentScores/::self_id', authMiddleware.checkToken, record.getProfileCurrentScores);
+    app.get('/api/getProfileCurrentScores/:self_id', authMiddleware.checkToken, record.getProfileCurrentScores);
 
     app.get('/api/transferAll', record.transferAll);
 
