@@ -260,9 +260,10 @@ exports.getAllInnerCircleEmails = async (req, res) => {
 exports.getProfileCurrentScores = async (req, res) => {
     try {
         const id = req.params.self_id;
-        let record = await Record.find({ userId: id });
+        let record = await Record.findOne({ userId: id });
 
         return res.json({
+            success: 1,
             score: record.score,
             bluetoothScore: record.bluetoothScore,
         });
