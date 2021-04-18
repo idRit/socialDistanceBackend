@@ -1,9 +1,11 @@
 const UserSchema = require('../models/user.model');
+const OtpSchema = require('../models/otp.model');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const config = require('../../config/pass.config');
 const nodemailer = require("nodemailer");
 const QRCode = require('qrcode');
+const e = require('cors');
 
 const generateQR = async text => {
     try {
@@ -73,19 +75,24 @@ async function sendEmail(userName, email, newPass) {
         service: 'gmail',
         auth: {
             user: "mritwik369@gmail.com", // generated ethereal user
-            pass: password.emailPassword // generated ethereal password
+            // pass: password.emailPassword // generated ethereal password
+            pass: "yczhlxcsepitueab" // generated ethereal password
         }
     });
 
     // send mail with defined transport object
     let info = await transporter.sendMail({
-        from: '"Ritwik Mukherjee" mritwik369@gmail.com', // sender address
+        from: '"SocialDistanceApp" mritwik369@gmail.com', // sender address
         to: email, // list of receivers
-        subject: "Your new password is here", // Subject line
-        text: "New Password For " + userName + ": " + newPass + "."// plain text body
+        subject: "OTP for SocialDistancing Application", // Subject line
+        text: "OTP For App is " + newPass + "."// plain text body
     });
 
     console.log("Message sent: %s", info.messageId);
+}
+
+function genOTP() {
+    return Math.floor(100000 + Math.random() * 900000);
 }
 
 async function changePassword(username, email, password) {
@@ -207,6 +214,54 @@ async function loginHelper(username, password, res) {
         return res.json({
             success: false,
             message: 'Incorrect username or password'
+        });
+    }
+}
+
+exports.generateOtp = async (req, res) => {
+    let otp = genOTP();
+    try {
+        await sendEmail("", req.body.email, otp);
+        await OtpSchema.findOneAndUpdate({
+            email: req.body.email
+        }, { otp }, {
+            upsert: true
+        });
+        return res.json({
+            success: true,
+            message: "OTP sent!"
+        });
+    } catch (error) {
+        console.log(error);
+        return res.json({
+            success: false,
+            message: 'Service issue'
+        });
+    }
+}
+
+exports.validateOtp = async (req, res) => {
+    try {
+        let object = await OtpSchema.findOne({
+            email: req.body.email
+        });
+
+        if (object)
+            if (object.otp == req.body.otp)
+                return res.json({
+                    success: true,
+                    message: "Verified!"
+                });
+
+        return res.json({
+            success: false,
+            message: "Otp invalid"
+        });
+    } catch (error) {
+        console.log(error);
+        return res.json({
+            success: false,
+            message: 'Service Issue'
         });
     }
 }
